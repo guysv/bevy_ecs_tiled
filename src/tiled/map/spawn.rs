@@ -4,7 +4,7 @@
 //! It handles the creation of map layers, tiles, objects, and their associated components in the ECS world,
 //! enabling the rendering and interaction of Tiled maps within a Bevy application.
 
-use crate::{prelude::*, tiled::event::TiledEventWriters};
+use crate::{prelude::*, tiled::event::TiledEventWriters, tiled::image::TiledImageParallax};
 use bevy::{prelude::*, sprite::Anchor};
 use bevy_ecs_tilemap::prelude::{
     AnimatedTile, IsoCoordSystem, TileBundle, TileFlip, TileStorage, TileTextureIndex, TilemapId,
@@ -128,7 +128,7 @@ pub(crate) fn spawn_map(
                     TiledLayer::Image,
                     Transform::from_translation(pos.extend(offset_z)),
                 ));
-                spawn_image_layer(commands, tiled_map, &layer_event, image_layer, asset_server);
+                spawn_image_layer(commands, tiled_map, &layer_event, image_layer, asset_server, layer.parallax_x, layer.parallax_y);
             }
         };
 
@@ -569,6 +569,8 @@ fn spawn_image_layer(
     layer_event: &TiledEvent<LayerCreated>,
     image_layer: ImageLayer,
     asset_server: &Res<AssetServer>,
+    parallax_x: f32,
+    parallax_y: f32,
 ) {
     if let Some(image) = &image_layer.image {
         let image_position = match tilemap_type_from_map(&tiled_map.map) {
@@ -593,6 +595,11 @@ fn spawn_image_layer(
                 ..default()
             },
             Transform::from_xyz(image_position.x, image_position.y, 0.),
+            TiledImageParallax {
+                parallax_x,
+                parallax_y,
+                base_position: image_position,
+            },
         ));
     }
 }

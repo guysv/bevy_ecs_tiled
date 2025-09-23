@@ -580,6 +580,7 @@ fn spawn_image_layer(
     anchor: &TilemapAnchor,
 ) {
     if let Some(image) = &image_layer.image {
+        println!("image: {:?}", image);
         let Some(handle) = layer_event
             .get_layer_id()
             .and_then(|id| tiled_map.images.get(&id))

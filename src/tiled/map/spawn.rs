@@ -585,8 +585,10 @@ fn spawn_image_layer(
             .get_layer_id()
             .and_then(|id| tiled_map.images.get(&id))
         else {
+            println!("image not found");
             return;
         };
+        println!("image loaded successfully");
 
         let image_size = Vec2::new(image.width as f32, image.height as f32);
         let image_position = tiled_map.world_space_from_tiled_position(

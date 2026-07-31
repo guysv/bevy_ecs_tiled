@@ -66,7 +66,7 @@ pub(crate) fn plugin(app: &mut App) {
     app.register_type::<TiledLayerParallax>();
     app.register_type::<TiledParallaxCamera>();
     app.add_systems(
-        Update,
+        FixedUpdate,
         update_layer_parallax.in_set(TiledUpdateSystems::UpdateParallaxLayers),
     );
 }
